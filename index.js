@@ -44,7 +44,7 @@ app.post("/api/users", (req, res) => {
   res.send(user);
 });
 
-// PUT (update) an user
+// PUT (update) a user
 app.put("/api/users/:id", (req, res) => {
   const user = users.find((u) => u.id === parseInt(req.params.id));
   if (!user) {
@@ -57,7 +57,7 @@ app.put("/api/users/:id", (req, res) => {
   res.send(user);
 });
 
-// DELETE an user
+// DELETE a user
 app.delete("/api/users/:id", (req, res) => {
   const user = users.find((u) => u.id === parseInt(req.params.id));
   if (!user) {
