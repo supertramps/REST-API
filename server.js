@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 
-app.use(express.json());
-
 const users = [
   { id: 1, name: "Elin", eyeColor: "Blue", age: 19 },
   { id: 2, name: "Johan", eyeColor: "Hazel", age: 35 },
@@ -12,20 +10,19 @@ const users = [
   { id: 6, name: "Simon", eyeColor: "Brown", age: 17 },
 ];
 
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
+app.use(express.static("./client"));
+app.use(express.json());
 
 // GET all the users
 app.get("/api/users", (req, res) => {
-  res.send(users);
+  res.json(users);
 });
 
 // GET one of the users
 app.get("/api/users/:id", (req, res) => {
   const user = users.find((u) => u.id === parseInt(req.params.id));
   if (!user) res.status(404).send("The user with the given ID was not found.");
-  res.send(user);
+  res.json(user);
 });
 
 // POST new user
@@ -34,14 +31,28 @@ app.post("/api/users", (req, res) => {
     res.status(400).send("Name is required.");
     return;
   }
-  const user = {
-    id: users.length + 1,
-    name: req.body.name,
-    eyeColor: req.body.eyeColor,
-    age: req.body.age,
-  };
-  users.push(user);
-  res.send(user);
+
+  const nameToSave = req.body.name;
+  const eyeColorToSave = req.body.eyeColor;
+  const ageToSave = req.body.age;
+
+  let idToSave = 0;
+  users.forEach((user) => {
+    if (user.id > idToSave) {
+      idToSave = user.id;
+    }
+  });
+  idToSave++;
+
+  users.push({
+    id: idToSave,
+    name: nameToSave,
+    eyeColor: eyeColorToSave,
+    age: ageToSave,
+  });
+  res.json({
+    status: `New user ${nameToSave} created. `,
+  });
 });
 
 // PUT (update) a user
@@ -54,7 +65,7 @@ app.put("/api/users/:id", (req, res) => {
   user.name = req.body.name;
   user.eyeColor = req.body.eyeColor;
   user.age = req.body.age;
-  res.send(user);
+  res.json(user);
 });
 
 // DELETE a user
@@ -67,7 +78,7 @@ app.delete("/api/users/:id", (req, res) => {
   const index = users.indexOf(user);
   users.splice(index, 1);
 
-  res.send(user);
+  res.json(user);
 });
 
 const port = process.env.PORT || 3000;
