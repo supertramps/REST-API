@@ -9,7 +9,7 @@ Content-Type: application/json
 
 {
     "eyeColor": "White",
-    "name": "Felix",
+    "name": "Hejsan",
     "age": 14
 }
 ###
@@ -19,8 +19,9 @@ PUT http://localhost:5000/api/users/1
 Content-Type: application/json
 
 {
-    "id": 1,
     "name": "Hanna",
+    "eyeColor": "red",
+    "age": 2
 }
 
 ###

@@ -62,10 +62,11 @@ app.put("/api/users/:id", (req, res) => {
     res.status(404).send("The user with the given ID was not found.");
     return;
   }
+
   user.name = req.body.name;
   user.eyeColor = req.body.eyeColor;
   user.age = req.body.age;
-  res.json(user);
+  res.send(user);
 });
 
 // DELETE a user
