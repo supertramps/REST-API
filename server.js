@@ -1,7 +1,8 @@
 const express = require("express");
+const Joi = require("@hapi/joi");
 const app = express();
 
-const users = [
+let users = [
   { id: 1, name: "Elin", eyeColor: "Blue", age: 19 },
   { id: 2, name: "Johan", eyeColor: "Hazel", age: 35 },
   { id: 3, name: "Alice", eyeColor: "Green", age: 23 },
@@ -27,8 +28,15 @@ app.get("/api/users/:id", (req, res) => {
 
 // POST new user
 app.post("/api/users", (req, res) => {
-  if (!req.body.name) {
-    res.status(400).send("Name is required.");
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    eyeColor: Joi.string().required(),
+    age: Joi.number().required(),
+  });
+  const result = schema.validate(req.body);
+
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
     return;
   }
 
@@ -51,7 +59,7 @@ app.post("/api/users", (req, res) => {
     age: ageToSave,
   });
   res.json({
-    status: `New user ${nameToSave} created. `,
+    status: `New user ${nameToSave} created.`,
   });
 });
 
@@ -62,7 +70,17 @@ app.put("/api/users/:id", (req, res) => {
     res.status(404).send("The user with the given ID was not found.");
     return;
   }
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    eyeColor: Joi.string().required(),
+    age: Joi.number().required(),
+  });
+  const result = schema.validate(req.body);
 
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
   user.name = req.body.name;
   user.eyeColor = req.body.eyeColor;
   user.age = req.body.age;

@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Elin",
+      "eyeColor": "Blue",
+      "age": 19
+    },
+
+    {
+      "id": 2,
+      "name": "Johan",
+      "eyeColor": "Hazel",
+      "age": 35
+    },
+
+    {
+      "id": 3,
+      "name": "Alice",
+      "eyeColor": "Green",
+      "age": 23
+    },
+
+    {
+      "id": 4,
+      "name": "Martin",
+      "eyeColor": "Blue",
+      "age": 44
+    },
+
+    {
+      "id": 5,
+      "name": "Eva",
+      "eyeColor": "Green",
+      "age": 36
+    },
+
+    {
+      "id": 6,
+      "name": "Simon",
+      "eyeColor": "Brown",
+      "age": 17
+    }
+  ]
+}
