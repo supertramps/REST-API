@@ -1,15 +1,10 @@
 const express = require("express");
 const Joi = require("@hapi/joi");
+var jsonfile = require("jsonfile");
 const app = express();
-
-let users = [
-  { id: 1, name: "Elin", eyeColor: "Blue", age: 19 },
-  { id: 2, name: "Johan", eyeColor: "Hazel", age: 35 },
-  { id: 3, name: "Alice", eyeColor: "Green", age: 23 },
-  { id: 4, name: "Martin", eyeColor: "Blue", age: 44 },
-  { id: 5, name: "Eva", eyeColor: "Green", age: 36 },
-  { id: 6, name: "Simon", eyeColor: "Brown", age: 17 },
-];
+const fs = require("fs");
+let rawdata = fs.readFileSync("users.json");
+let users = JSON.parse(rawdata);
 
 app.use(express.static("./client"));
 app.use(express.json());
@@ -21,9 +16,13 @@ app.get("/api/users", (req, res) => {
 
 // GET one of the users
 app.get("/api/users/:id", (req, res) => {
-  const user = users.find((u) => u.id === parseInt(req.params.id));
-  if (!user) res.status(404).send("The user with the given ID was not found.");
+  const user = getUser(req.params.id);
+  if (user.length === 0) {
+    res.status(404).send("The user with the given ID was not found.");
+    return;
+  }
   res.json(user);
+  // res.json(getUser(req.params.id));
 });
 
 // POST new user
@@ -65,32 +64,34 @@ app.post("/api/users", (req, res) => {
 
 // PUT (update) a user
 app.put("/api/users/:id", (req, res) => {
-  const user = users.find((u) => u.id === parseInt(req.params.id));
-  if (!user) {
+  const user = getUser(req.params.id);
+  if (user.length === 0) {
     res.status(404).send("The user with the given ID was not found.");
     return;
   }
-  const schema = Joi.object({
-    name: Joi.string().required(),
-    eyeColor: Joi.string().required(),
-    age: Joi.number().required(),
-  });
-  const result = schema.validate(req.body);
 
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
-    return;
-  }
-  user.name = req.body.name;
-  user.eyeColor = req.body.eyeColor;
-  user.age = req.body.age;
-  res.send(user);
+  jsonfile.readFile("users.json", function (err, obj) {
+    const fileObj = obj;
+    if (req.body.name) {
+      fileObj[req.params.id - 1].name = req.body.name;
+    }
+    if (req.body.eyeColor) {
+      fileObj[req.params.id - 1].eyeColor = req.body.eyeColor;
+    }
+    if (req.body.age) {
+      fileObj[req.params.id - 1].age = req.body.age;
+    }
+    jsonfile.writeFile("users.json", fileObj, { spaces: 2 }, (err) => {
+      if (err) throw err;
+      res.send(fileObj[req.params.id - 1]);
+    });
+  });
 });
 
 // DELETE a user
 app.delete("/api/users/:id", (req, res) => {
-  const user = users.find((u) => u.id === parseInt(req.params.id));
-  if (!user) {
+  const user = getUser(req.params.id);
+  if (user.length === 0) {
     res.status(404).send("The user with the given ID was not found.");
     return;
   }
@@ -99,6 +100,12 @@ app.delete("/api/users/:id", (req, res) => {
 
   res.json(user);
 });
+
+function getUser(id) {
+  return users.filter(function (users) {
+    return users.id == id;
+  });
+}
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}.`));

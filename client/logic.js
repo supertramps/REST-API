@@ -9,10 +9,17 @@ async function initSite() {
 // Get all users
 async function getAllUsers() {
   const users = await makeRequest("/api/users", "GET");
-  console.log(users);
-  const userlist = document.getElementById("textField");
-  const object = JSON.stringify(users);
-  userlist.innerHTML = object;
+
+  for (let i = 0; i < users.length; i++) {
+    const userList = document.createElement("div");
+    userList.setAttribute("id", "user" + i);
+    const element = users[i];
+    userList.innerHTML = element.name;
+    document.getElementById("textField").appendChild(userList);
+    console.log(element.name);
+  }
+  // const object = JSON.stringify(users);
+  // userList.innerHTML = object;
 }
 // Get a specific user
 async function getSpecificUser(id) {
