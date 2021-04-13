@@ -17,23 +17,52 @@ body {
   height: 100vh;
 }
 
-.apiContainer {
-  height: 50vh;
-  width: 100%;
-  background-color: #d9afd9;
-  background-image: linear-gradient(0deg, #d9afd9 0%, #97d9e1 100%);
-  flex-direction: column;
-}
-
-.textContainer {
+.userCardContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   height: 100%;
 }
 
-.flex {
+.apiContainer {
+  height: 50vh;
+  width: 100vw;
+  background-color: #d9afd9;
+  background-image: linear-gradient(0deg, #d9afd9 0%, #97d9e1 100%);
+  flex-direction: row;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  height: 2rem;
+  padding: 1rem;
+}
+
+.userCard {
+  height: 100%;
+  width: 10rem;
+  flex-direction: column;
+  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: black 1px dashed;
+}
+
+.editButton {
+}
+
+/* .flex {
   display: flex;
 }
 
 .center {
   justify-content: center;
   align-items: center;
-}
+} */

@@ -1,9 +1,7 @@
 window.addEventListener("load", initSite);
 
 async function initSite() {
-  console.log("Init");
-  updateUser(1, "Eridd", "white", 10);
-  deleteUser(2);
+  getAllUsers();
 }
 
 // Get all users
@@ -11,12 +9,24 @@ async function getAllUsers() {
   const users = await makeRequest("/api/users", "GET");
 
   for (let i = 0; i < users.length; i++) {
-    const userList = document.createElement("div");
-    userList.setAttribute("id", "user" + i);
+    const userCard = document.createElement("div");
+    const editButton = document.createElement("button");
+    // editButton.onclick();
+    const name = document.createElement("p");
+    const age = document.createElement("p");
+    const eyeColor = document.createElement("p");
+    const id = document.createElement("p");
+    editButton.classList.add("editButton");
+    userCard.classList.add("userCard", "flex", "center");
+    userCard.setAttribute("id", "user" + i);
     const element = users[i];
-    userList.innerHTML = element.name;
-    document.getElementById("textField").appendChild(userList);
-    console.log(element.name);
+    name.innerHTML = "Name:" + " " + element.name;
+    age.innerHTML = "Age:" + " " + element.age;
+    eyeColor.innerHTML = "Eye Color:" + " " + element.eyeColor;
+    id.innerHTML = "ID:" + " " + element.id;
+    editButton.innerHTML = "Edit";
+    userCard.append(name, age, eyeColor, id, editButton);
+    document.getElementById("userCard").appendChild(userCard);
   }
   // const object = JSON.stringify(users);
   // userList.innerHTML = object;
@@ -63,6 +73,6 @@ async function makeRequest(url, method, body) {
 }
 
 function hideResults() {
-  const textBox = document.getElementById("textField");
+  const textBox = document.getElementById("userCard");
   textBox.innerHTML = "";
 }
