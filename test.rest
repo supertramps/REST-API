@@ -20,12 +20,13 @@ Content-Type: application/json
 ###
 
 // update a user
-PUT http://localhost:3000/api/users/4
+PUT http://localhost:3000/api/users/3
 Content-Type: application/json
 
 {
-    "name": "TestName",
-    "age": 60
+    "name": "Alex",
+    "age": 60,
+    "eyeColor": "Blue"
     
     
     
@@ -34,6 +35,6 @@ Content-Type: application/json
 ###
 
 // delete a user
-DELETE http://localhost:3000/api/users/2
+DELETE http://localhost:3000/api/users/3
 
 ###
