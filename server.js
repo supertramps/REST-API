@@ -22,7 +22,6 @@ app.get("/api/users/:id", (req, res) => {
     return;
   }
   res.json(user);
-  // res.json(getUser(req.params.id));
 });
 
 // POST new user
@@ -38,6 +37,9 @@ app.post("/api/users", (req, res) => {
     res.status(400).send(result.error.details[0].message);
     return;
   }
+
+  const data = fs.readFileSync("users.json");
+  const userList = JSON.parse(data);
 
   const nameToSave = req.body.name;
   const eyeColorToSave = req.body.eyeColor;
@@ -60,49 +62,47 @@ app.post("/api/users", (req, res) => {
   res.json({
     status: `New user ${nameToSave} created.`,
   });
+  jsonfile.writeFile("users.json", users, { spaces: 2 }, (err) => {
+    if (err) throw err;
+    res.send();
+  });
 });
 
 // PUT (update) a user
 app.put("/api/users/:id", (req, res) => {
-  const user = getUser(req.params.id);
-  if (user.length === 0) {
-    res.status(404).send("The user with the given ID was not found.");
-    return;
-  }
+  const rawdata = fs.readFileSync("users.json");
+  const users = JSON.parse(rawdata);
+  const indexOfUser = users.findIndex((u) => u.id === parseInt(req.params.id));
 
-  jsonfile.readFile("users.json", function (err, obj) {
-    const fileObj = obj;
-    if (req.body.name) {
-      fileObj[req.params.id - 1].name = req.body.name;
-    }
-    if (req.body.eyeColor) {
-      fileObj[req.params.id - 1].eyeColor = req.body.eyeColor;
-    }
-    if (req.body.age) {
-      fileObj[req.params.id - 1].age = req.body.age;
-    }
-    jsonfile.writeFile("users.json", fileObj, { spaces: 2 }, (err) => {
-      if (err) throw err;
-      res.send(fileObj[req.params.id - 1]);
-    });
+  const updatedUser = req.body;
+  users[indexOfUser].name = updatedUser.name;
+  users[indexOfUser].age = updatedUser.age;
+  users[indexOfUser].eyeColor = updatedUser.eyeColor;
+
+  jsonfile.writeFile("users.json", users, { spaces: 2 }, (err) => {
+    if (err) throw err;
   });
+  res.status(200);
 });
 
 // DELETE a user
 app.delete("/api/users/:id", (req, res) => {
-  const user = getUser(req.params.id);
-  if (user.length === 0) {
+  const user = getUser(parseInt(req.params.id));
+  if (!user) {
     res.status(404).send("The user with the given ID was not found.");
     return;
+  } else {
+    const index = users.indexOf(user);
+    users.splice(index, 1);
+    jsonfile.writeFile("users.json", users, { spaces: 2 }, (err) => {
+      if (err) throw err;
+    });
+    res.status(200);
   }
-  const index = users.indexOf(user);
-  users.splice(index, 1);
-
-  res.json(user);
 });
 
 function getUser(id) {
-  return users.filter(function (users) {
+  return users.find(function (users) {
     return users.id == id;
   });
 }
