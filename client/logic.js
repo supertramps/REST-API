@@ -1,6 +1,6 @@
 window.addEventListener("load", initSite);
 
-async function initSite() {
+function initSite() {
   getAllUsers();
 }
 
@@ -45,8 +45,7 @@ async function getAllUsers() {
 }
 // Get a specific user
 async function getSpecificUser(id) {
-  const user = await makeRequest("/api/users/" + id, "GET");
-  console.log(user);
+  await makeRequest("/api/users/" + id, "GET");
 }
 
 async function setModalContent(id) {
@@ -60,7 +59,7 @@ async function setModalContent(id) {
   const submitButton = document.getElementById("submitButton");
   submitButton.addEventListener("click", () => {
     updateUser(id, userName.value, userAge.value, userEyeColor.value);
-    window.location.reload();
+    window.reload();
   });
 }
 
@@ -82,9 +81,9 @@ async function saveNewUser(name, age, eyeColor) {
 }
 
 // Update specific user
-async function updateUser(id, name, age, eyeColor) {
+function updateUser(id, name, age, eyeColor) {
   const body = { name: name, eyeColor: eyeColor, age: age };
-  await makeRequest("/api/users/" + id, "PUT", body);
+  makeRequest("/api/users/" + id, "PUT", body);
 }
 
 // Delete a user

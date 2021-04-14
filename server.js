@@ -72,12 +72,12 @@ app.post("/api/users", (req, res) => {
 app.put("/api/users/:id", (req, res) => {
   const rawdata = fs.readFileSync("users.json");
   const users = JSON.parse(rawdata);
-  const indexOfUser = users.findIndex((u) => u.id === parseInt(req.params.id));
+  const targetUser = users.findIndex((u) => u.id === parseInt(req.params.id));
 
   const updatedUser = req.body;
-  users[indexOfUser].name = updatedUser.name;
-  users[indexOfUser].age = updatedUser.age;
-  users[indexOfUser].eyeColor = updatedUser.eyeColor;
+  users[targetUser].name = updatedUser.name;
+  users[targetUser].age = updatedUser.age;
+  users[targetUser].eyeColor = updatedUser.eyeColor;
 
   jsonfile.writeFile("users.json", users, { spaces: 2 }, (err) => {
     if (err) throw err;
