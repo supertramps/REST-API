@@ -7,6 +7,7 @@ function initSite() {
 // Get all users
 async function getAllUsers() {
   const users = await makeRequest("/api/users", "GET");
+  console.log(users.length);
 
   for (let i = 0; i < users.length; i++) {
     const userCard = document.createElement("div");
@@ -17,9 +18,11 @@ async function getAllUsers() {
     const eyeColor = document.createElement("p");
     const id = document.createElement("p");
     const element = users[i];
+    const inspectButton = document.createElement("button");
 
-    editButton.classList.add("editButton");
-    deleteButton.classList.add("deleteButton");
+    inspectButton.classList.add("button");
+    editButton.classList.add("editButton", "button");
+    deleteButton.classList.add("deleteButton", "button");
     userCard.classList.add("userCard", "flex", "center");
     userCard.setAttribute("id", "user" + i);
 
@@ -29,6 +32,7 @@ async function getAllUsers() {
     id.innerHTML = "ID:" + " " + element.id;
     editButton.innerHTML = "Edit";
     deleteButton.innerHTML = "Delete";
+    inspectButton.innerHTML = "Inspect";
 
     editButton.onclick = function () {
       setModalContent(element.id);
@@ -39,13 +43,61 @@ async function getAllUsers() {
       deleteUser(element.id);
     };
 
-    userCard.append(name, age, eyeColor, id, editButton, deleteButton);
+    inspectButton.onclick = function () {
+      getSpecificUser(element.id);
+    };
+
+    userCard.append(
+      name,
+      age,
+      eyeColor,
+      id,
+      editButton,
+      deleteButton,
+      inspectButton
+    );
     document.getElementById("userCard").appendChild(userCard);
   }
 }
 // Get a specific user
 async function getSpecificUser(id) {
-  await makeRequest("/api/users/" + id, "GET");
+  const specificUser = await makeRequest("/api/users/" + id, "GET");
+  hideResults();
+  const userCard = document.createElement("div");
+  const deleteButton = document.createElement("button");
+  const editButton = document.createElement("button");
+  const name = document.createElement("p");
+  const age = document.createElement("p");
+  const eyeColor = document.createElement("p");
+  const chosenID = document.createElement("p");
+
+  editButton.classList.add("editButton", "button");
+  deleteButton.classList.add("deleteButton", "button");
+  userCard.classList.add("userCard", "flex", "center");
+
+  name.innerHTML = "Name:" + " " + specificUser.name;
+  age.innerHTML = "Age:" + " " + specificUser.age;
+  eyeColor.innerHTML = "Eye Color:" + " " + specificUser.eyeColor;
+  chosenID.innerHTML = "ID:" + " " + specificUser.id;
+  editButton.innerHTML = "Edit";
+  deleteButton.innerHTML = "Delete";
+
+  editButton.onclick = function () {
+    setModalContent(specificUser.id);
+    handleModal();
+  };
+
+  deleteButton.onclick = function () {
+    deleteUser(specificUser.id);
+  };
+
+  userCard.append(name, age, eyeColor, chosenID, editButton, deleteButton);
+  document.getElementById("userCard").appendChild(userCard);
+}
+
+function hideResults() {
+  const textBox = document.getElementById("userCard");
+  textBox.innerHTML = "";
 }
 
 async function setModalContent(id) {
@@ -104,11 +156,6 @@ async function makeRequest(url, method, body) {
   const result = await response.json();
 
   return result;
-}
-
-function hideResults() {
-  const textBox = document.getElementById("userCard");
-  textBox.innerHTML = "";
 }
 
 function handleModal() {
