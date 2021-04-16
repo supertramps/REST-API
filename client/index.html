@@ -5,15 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="./edituser.css" />
+    <link rel="stylesheet" href="./modalContent.css" />
     <script src="./logic.js"></script>
     <title>API</title>
   </head>
   <body>
     <div class="buttonContainer">
-      <button onclick="getAllUsers()">Get all users</button>
-      <button onclick="hideResults()">Hide</button>
-      <button onclick="setEmptyModal(); handleModal();">Create User</button>
+      <button class="button" onclick="location.href='http://localhost:3000/';">
+        Get all users
+      </button>
+      <button class="button" onclick="setEmptyModal(); handleModal();">
+        Create User
+      </button>
     </div>
     <div class="container">
       <div class="flex center apiContainer">
@@ -23,7 +26,9 @@
     <div id="myModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
+        <div onclick="location.href='http://localhost:3000/';">
+          <span class="close">&times;</span>
+        </div>
         <div class="modalContainer">
           <div>
             <form id="userForm" class="form">
