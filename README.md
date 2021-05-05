@@ -1,3 +1,4 @@
+
 **REST-API**
 
 Uppgift där vi skulle skapa en API med CRUD i åtanke. Jag valde att skapa en enklare api där man kan läsa, skapa och ändra en lista med användare. Datan sparas till en JSON-fil.
