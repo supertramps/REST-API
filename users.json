@@ -1,11 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "Eric",
-    "eyeColor": "Green",
-    "age": "10"
-  },
-  {
     "id": 2,
     "name": "Alex",
     "eyeColor": "Blue",
@@ -27,6 +21,18 @@
     "id": 5,
     "name": "Simone",
     "eyeColor": "Brown",
-    "age": 31
+    "age": "34"
+  },
+  {
+    "id": 6,
+    "name": "Jimmy",
+    "eyeColor": "Green",
+    "age": "26"
+  },
+  {
+    "id": 7,
+    "name": "Gordon",
+    "eyeColor": "Hazel",
+    "age": 2
   }
 ]

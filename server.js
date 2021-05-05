@@ -1,5 +1,5 @@
 const express = require("express");
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 var jsonfile = require("jsonfile");
 const app = express();
 const fs = require("fs");
