@@ -111,7 +111,7 @@ async function setModalContent(id) {
   const submitButton = document.getElementById("submitButton");
   submitButton.addEventListener("click", () => {
     updateUser(id, userName.value, userAge.value, userEyeColor.value);
-    window.reload();
+    window.location.reload();
   });
 }
 
